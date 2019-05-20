@@ -136,6 +136,20 @@ module Paysafe
       CustomerVault::Card::new response
     end
 
+    def create_card_with_token card
+      request = Request.new(
+      method: Request::POST,
+      uri: prepare_uri("/profiles/" + card.profileID + "/cards"),
+      body: card.get(
+      required = ['singleUseToken'],
+      ignore = ['profileID']
+      )
+      )
+
+      response = @client.process_request request
+      CustomerVault::Card::new response
+    end
+
     def update_card card
       request = Request.new(
       method: Request::PUT,
